@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+body {
+  background-color: #0a0a0a;
+  color: #ffffff;
+  font-family: 'F1 Bold', Arial, sans-serif;
+  text-align: center;
+}
+#countdown {
+  font-size: 48px;
+  letter-spacing: 2px;
+  margin-top: 20px;
+  color: #e10600; /* Rojo estilo F1 */
+}
+h1 {
+  font-size: 36px;
+  margin-bottom: 10px;
+  color: #ffffff;
+}
+.container {
+  padding: 20px;
+  border: 3px solid #e10600;
+  border-radius: 15px;
+  background: #111;
+  width: 80%;
+  margin: auto;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>🏁 Próxima carrera – GP de Australia</h1>
+  <div id="countdown"></div>
+</div>
+
+<script>
+// Fecha y hora de la carrera en CDMX (ajusta si sabes la hora exacta)
+const raceDate = new Date("2026-03-08T02:00:00-06:00");
+
+function updateCountdown() {
+  const now = new Date();
+  const diff = raceDate - now;
+
+  if (diff <= 0) {
+    document.getElementById("countdown").innerHTML = "¡La carrera ya empezó!";
+    return;
+  }
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((diff / 1000 / 60) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
+
+  document.getElementById("countdown").innerHTML =
+    days + "d " + hours + "h " + minutes + "m " + seconds + "s";
+}
+
+setInterval(updateCountdown, 1000);
+updateCountdown();
+</script>
+
+</body>
+</html>

@@ -10,20 +10,12 @@
 html, body {
   margin: 0;
   padding: 0;
-  overflow: hidden;
-  background: #000000;
+  background: #000;
   font-family: 'Orbitron', sans-serif;
   color: white;
 }
 
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .container {
-  width: 100%;
   padding: 60px 20px;
   text-align: center;
 }
@@ -36,8 +28,7 @@ body {
 .gp-name {
   font-size: 20px;
   color: #E10600;
-  margin-top: 10px;
-  margin-bottom: 40px;
+  margin: 10px 0 40px 0;
 }
 
 .red-line {
@@ -62,7 +53,7 @@ body {
 }
 
 .time-box {
-  background: #111111;
+  background: #111;
   padding: 25px 20px;
   border-radius: 14px;
   border: 2px solid #E10600;
@@ -82,11 +73,12 @@ body {
 .label {
   font-size: 12px;
   margin-top: 8px;
-  color: #AAAAAA;
+  color: #AAA;
   letter-spacing: 1px;
 }
 </style>
 </head>
+
 <body>
 
 <div class="container">
@@ -116,7 +108,16 @@ body {
 </div>
 
 <script>
-// Hora CDMX (-06:00)
+// Ajusta automáticamente la altura del iframe
+function sendHeight() {
+  const height = document.documentElement.scrollHeight;
+  parent.postMessage(height, "*");
+}
+
+window.onload = sendHeight;
+window.onresize = sendHeight;
+
+// Fecha CDMX
 const raceDate = new Date("2026-03-08T02:00:00-06:00");
 
 function updateCountdown() {
@@ -130,6 +131,7 @@ function updateCountdown() {
         <p style="font-size:20px;">La carrera ha comenzado</p>
       </div>
     `;
+    sendHeight();
     return;
   }
 

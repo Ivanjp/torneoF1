@@ -7,73 +7,83 @@
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
 
 <style>
-body {
+html, body {
   margin: 0;
-  background: linear-gradient(180deg, #000000 0%, #111111 100%);
-  color: white;
+  padding: 0;
+  overflow: hidden;
+  background: #000000;
   font-family: 'Orbitron', sans-serif;
-  text-align: center;
+  color: white;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .container {
-  padding: 40px 20px;
+  width: 100%;
+  padding: 60px 20px;
+  text-align: center;
 }
 
 .title {
-  font-size: 28px;
-  letter-spacing: 2px;
-  margin-bottom: 10px;
+  font-size: 30px;
+  letter-spacing: 3px;
 }
 
 .gp-name {
   font-size: 20px;
-  color: #e10600;
+  color: #E10600;
+  margin-top: 10px;
   margin-bottom: 40px;
+}
+
+.red-line {
+  height: 4px;
+  background: #E10600;
+  margin: 30px auto 50px auto;
+  width: 60%;
+  animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% { width: 40%; }
+  50% { width: 75%; }
+  100% { width: 40%; }
 }
 
 .countdown {
   display: flex;
   justify-content: center;
-  gap: 20px;
+  gap: 25px;
   flex-wrap: wrap;
 }
 
 .time-box {
-  background: #1a1a1a;
-  padding: 20px;
-  border-radius: 12px;
-  border: 2px solid #e10600;
-  min-width: 100px;
-  transition: 0.3s;
+  background: #111111;
+  padding: 25px 20px;
+  border-radius: 14px;
+  border: 2px solid #E10600;
+  min-width: 110px;
+  transition: 0.3s ease;
 }
 
 .time-box:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 20px #e10600;
+  transform: scale(1.07);
+  box-shadow: 0 0 25px #E10600;
 }
 
 .number {
-  font-size: 36px;
+  font-size: 42px;
 }
 
 .label {
   font-size: 12px;
-  margin-top: 5px;
-  color: #aaa;
-}
-
-.red-line {
-  height: 4px;
-  background: #e10600;
-  margin: 30px auto;
-  width: 60%;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0% { width: 40%; }
-  50% { width: 70%; }
-  100% { width: 40%; }
+  margin-top: 8px;
+  color: #AAAAAA;
+  letter-spacing: 1px;
 }
 </style>
 </head>
@@ -82,7 +92,7 @@ body {
 <div class="container">
   <div class="title">PRÓXIMA CARRERA</div>
   <div class="gp-name">GRAN PREMIO DE AUSTRALIA</div>
-  
+
   <div class="red-line"></div>
 
   <div class="countdown">
@@ -106,6 +116,7 @@ body {
 </div>
 
 <script>
+// Hora CDMX (-06:00)
 const raceDate = new Date("2026-03-08T02:00:00-06:00");
 
 function updateCountdown() {
@@ -113,7 +124,12 @@ function updateCountdown() {
   const diff = raceDate - now;
 
   if (diff <= 0) {
-    document.querySelector(".container").innerHTML = "<h1 style='color:#e10600;'>¡LUZ VERDE! 🏎🔥</h1>";
+    document.body.innerHTML = `
+      <div style="width:100%;text-align:center;padding:100px 20px;">
+        <h1 style="color:#E10600;font-size:50px;">¡LUZ VERDE! 🏎🔥</h1>
+        <p style="font-size:20px;">La carrera ha comenzado</p>
+      </div>
+    `;
     return;
   }
 

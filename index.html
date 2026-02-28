@@ -2,9 +2,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Cuenta regresiva F1</title>
+<title>Race Weekend Hub</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
 html, body {
@@ -16,65 +16,67 @@ html, body {
 }
 
 .container {
-  padding: 60px 20px;
+  padding: 50px 20px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.header {
   text-align: center;
+  margin-bottom: 40px;
 }
 
-.title {
+.gp-title {
   font-size: 30px;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
 }
 
-.gp-name {
-  font-size: 20px;
+.circuit-name {
+  font-size: 18px;
   color: #E10600;
-  margin: 10px 0 40px 0;
+  margin-top: 10px;
 }
 
 .red-line {
   height: 4px;
   background: #E10600;
-  margin: 30px auto 50px auto;
+  margin: 30px auto;
   width: 60%;
-  animation: pulse 2s infinite ease-in-out;
 }
 
-@keyframes pulse {
-  0% { width: 40%; }
-  50% { width: 75%; }
-  100% { width: 40%; }
+.content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+.track-img {
+  width: 100%;
+  filter: brightness(0) invert(1);
+}
+
+.data-box {
+  background: #111;
+  padding: 25px;
+  border-radius: 12px;
+  border: 2px solid #E10600;
 }
 
 .countdown {
-  display: flex;
-  justify-content: center;
-  gap: 25px;
-  flex-wrap: wrap;
+  margin-top: 30px;
+  font-size: 22px;
+  color: #E10600;
 }
 
-.time-box {
-  background: #111;
-  padding: 25px 20px;
-  border-radius: 14px;
-  border: 2px solid #E10600;
-  min-width: 110px;
-  transition: 0.3s ease;
+.section-title {
+  margin-top: 20px;
+  color: #E10600;
 }
 
-.time-box:hover {
-  transform: scale(1.07);
-  box-shadow: 0 0 25px #E10600;
-}
-
-.number {
-  font-size: 42px;
-}
-
-.label {
-  font-size: 12px;
-  margin-top: 8px;
-  color: #AAA;
-  letter-spacing: 1px;
+@media(max-width: 900px) {
+  .content {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
 </head>
@@ -82,72 +84,101 @@ html, body {
 <body>
 
 <div class="container">
-  <div class="title">PRÓXIMA CARRERA</div>
-  <div class="gp-name">GRAN PREMIO DE AUSTRALIA</div>
+
+  <div class="header">
+    <div class="gp-title" id="gpTitle"></div>
+    <div class="circuit-name" id="circuitName"></div>
+  </div>
 
   <div class="red-line"></div>
 
-  <div class="countdown">
-    <div class="time-box">
-      <div id="days" class="number">0</div>
-      <div class="label">DÍAS</div>
+  <div class="content">
+    <div>
+      <img id="trackImg" class="track-img">
     </div>
-    <div class="time-box">
-      <div id="hours" class="number">0</div>
-      <div class="label">HORAS</div>
-    </div>
-    <div class="time-box">
-      <div id="minutes" class="number">0</div>
-      <div class="label">MIN</div>
-    </div>
-    <div class="time-box">
-      <div id="seconds" class="number">0</div>
-      <div class="label">SEG</div>
-    </div>
+
+    <div class="data-box" id="circuitData"></div>
   </div>
+
+  <div class="countdown" id="countdown"></div>
+
 </div>
 
 <script>
-// Ajusta automáticamente la altura del iframe
-function sendHeight() {
-  const height = document.documentElement.scrollHeight;
-  parent.postMessage(height, "*");
+
+// MINI CALENDARIO (puedes ampliar todo 2026)
+const races = [
+  {
+    name: "Gran Premio de Australia 🇦🇺",
+    circuit: "Albert Park Circuit",
+    location: "Melbourne",
+    date: "2026-03-08T02:00:00-06:00",
+    length: "5.278 km",
+    laps: 58,
+    distance: "306.124 km",
+    record: "1:19.813",
+    winners: ["2025 – Max Verstappen", "2024 – Carlos Sainz", "2023 – Lewis Hamilton"],
+    image: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Albert_Park_Circuit_2021.svg"
+  },
+  {
+    name: "Gran Premio de Japón 🇯🇵",
+    circuit: "Suzuka Circuit",
+    location: "Suzuka",
+    date: "2026-03-22T00:00:00-06:00",
+    length: "5.807 km",
+    laps: 53,
+    distance: "307.471 km",
+    record: "1:30.983",
+    winners: ["2025 – Max Verstappen", "2024 – Charles Leclerc", "2023 – Max Verstappen"],
+    image: "https://upload.wikimedia.org/wikipedia/commons/1/1e/Suzuka_circuit_map.svg"
+  }
+];
+
+function getNextRace() {
+  const now = new Date();
+  return races.find(race => new Date(race.date) > now);
 }
 
-window.onload = sendHeight;
-window.onresize = sendHeight;
+const race = getNextRace();
 
-// Fecha CDMX
-const raceDate = new Date("2026-03-08T02:00:00-06:00");
+if (race) {
+  document.getElementById("gpTitle").textContent = race.name;
+  document.getElementById("circuitName").textContent = race.circuit;
+  document.getElementById("trackImg").src = race.image;
 
-function updateCountdown() {
-  const now = new Date();
-  const diff = raceDate - now;
+  document.getElementById("circuitData").innerHTML = `
+    <p><strong>Ubicación:</strong> ${race.location}</p>
+    <p><strong>Longitud:</strong> ${race.length}</p>
+    <p><strong>Vueltas:</strong> ${race.laps}</p>
+    <p><strong>Distancia:</strong> ${race.distance}</p>
+    <p><strong>Récord:</strong> ${race.record}</p>
+    <div class="section-title">Últimos ganadores</div>
+    ${race.winners.map(w => `<p>${w}</p>`).join("")}
+  `;
 
-  if (diff <= 0) {
-    document.body.innerHTML = `
-      <div style="width:100%;text-align:center;padding:100px 20px;">
-        <h1 style="color:#E10600;font-size:50px;">¡LUZ VERDE! 🏎🔥</h1>
-        <p style="font-size:20px;">La carrera ha comenzado</p>
-      </div>
-    `;
-    sendHeight();
-    return;
+  const raceDate = new Date(race.date);
+
+  function updateCountdown() {
+    const now = new Date();
+    const diff = raceDate - now;
+
+    if (diff <= 0) {
+      document.getElementById("countdown").textContent = "🏁 ¡Race Time!";
+      return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / 1000 / 60) % 60);
+
+    document.getElementById("countdown").textContent =
+      `Cuenta regresiva: ${days}d ${hours}h ${minutes}m`;
   }
 
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-  const minutes = Math.floor((diff / 1000 / 60) % 60);
-  const seconds = Math.floor((diff / 1000) % 60);
-
-  document.getElementById("days").textContent = days;
-  document.getElementById("hours").textContent = hours;
-  document.getElementById("minutes").textContent = minutes;
-  document.getElementById("seconds").textContent = seconds;
+  setInterval(updateCountdown, 1000);
+  updateCountdown();
 }
 
-setInterval(updateCountdown, 1000);
-updateCountdown();
 </script>
 
 </body>

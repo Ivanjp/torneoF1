@@ -2,43 +2,110 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<title>Cuenta regresiva F1</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+
 <style>
 body {
-  background-color: #0a0a0a;
-  color: #ffffff;
-  font-family: 'F1 Bold', Arial, sans-serif;
+  margin: 0;
+  background: linear-gradient(180deg, #000000 0%, #111111 100%);
+  color: white;
+  font-family: 'Orbitron', sans-serif;
   text-align: center;
 }
-#countdown {
-  font-size: 48px;
-  letter-spacing: 2px;
-  margin-top: 20px;
-  color: #e10600; /* Rojo estilo F1 */
-}
-h1 {
-  font-size: 36px;
-  margin-bottom: 10px;
-  color: #ffffff;
-}
+
 .container {
+  padding: 40px 20px;
+}
+
+.title {
+  font-size: 28px;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+.gp-name {
+  font-size: 20px;
+  color: #e10600;
+  margin-bottom: 40px;
+}
+
+.countdown {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.time-box {
+  background: #1a1a1a;
   padding: 20px;
-  border: 3px solid #e10600;
-  border-radius: 15px;
-  background: #111;
-  width: 80%;
-  margin: auto;
+  border-radius: 12px;
+  border: 2px solid #e10600;
+  min-width: 100px;
+  transition: 0.3s;
+}
+
+.time-box:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px #e10600;
+}
+
+.number {
+  font-size: 36px;
+}
+
+.label {
+  font-size: 12px;
+  margin-top: 5px;
+  color: #aaa;
+}
+
+.red-line {
+  height: 4px;
+  background: #e10600;
+  margin: 30px auto;
+  width: 60%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { width: 40%; }
+  50% { width: 70%; }
+  100% { width: 40%; }
 }
 </style>
 </head>
 <body>
 
 <div class="container">
-  <h1>🏁 Próxima carrera – GP de Australia</h1>
-  <div id="countdown"></div>
+  <div class="title">PRÓXIMA CARRERA</div>
+  <div class="gp-name">GRAN PREMIO DE AUSTRALIA</div>
+  
+  <div class="red-line"></div>
+
+  <div class="countdown">
+    <div class="time-box">
+      <div id="days" class="number">0</div>
+      <div class="label">DÍAS</div>
+    </div>
+    <div class="time-box">
+      <div id="hours" class="number">0</div>
+      <div class="label">HORAS</div>
+    </div>
+    <div class="time-box">
+      <div id="minutes" class="number">0</div>
+      <div class="label">MIN</div>
+    </div>
+    <div class="time-box">
+      <div id="seconds" class="number">0</div>
+      <div class="label">SEG</div>
+    </div>
+  </div>
 </div>
 
 <script>
-// Fecha y hora de la carrera en CDMX (ajusta si sabes la hora exacta)
 const raceDate = new Date("2026-03-08T02:00:00-06:00");
 
 function updateCountdown() {
@@ -46,7 +113,7 @@ function updateCountdown() {
   const diff = raceDate - now;
 
   if (diff <= 0) {
-    document.getElementById("countdown").innerHTML = "¡La carrera ya empezó!";
+    document.querySelector(".container").innerHTML = "<h1 style='color:#e10600;'>¡LUZ VERDE! 🏎🔥</h1>";
     return;
   }
 
@@ -55,8 +122,10 @@ function updateCountdown() {
   const minutes = Math.floor((diff / 1000 / 60) % 60);
   const seconds = Math.floor((diff / 1000) % 60);
 
-  document.getElementById("countdown").innerHTML =
-    days + "d " + hours + "h " + minutes + "m " + seconds + "s";
+  document.getElementById("days").textContent = days;
+  document.getElementById("hours").textContent = hours;
+  document.getElementById("minutes").textContent = minutes;
+  document.getElementById("seconds").textContent = seconds;
 }
 
 setInterval(updateCountdown, 1000);

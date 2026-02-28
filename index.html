@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Race Weekend Hub</title>
+<title>Info Circuito</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 
@@ -17,7 +17,7 @@ html, body {
 
 .container {
   padding: 50px 20px;
-  max-width: 1200px;
+  max-width: 1100px;
   margin: auto;
 }
 
@@ -27,21 +27,19 @@ html, body {
 }
 
 .gp-title {
-  font-size: 30px;
+  font-size: 28px;
   letter-spacing: 2px;
+}
+
+.flag {
+  width: 60px;
+  margin-top: 10px;
 }
 
 .circuit-name {
   font-size: 18px;
   color: #E10600;
   margin-top: 10px;
-}
-
-.red-line {
-  height: 4px;
-  background: #E10600;
-  margin: 30px auto;
-  width: 60%;
 }
 
 .content {
@@ -52,7 +50,9 @@ html, body {
 
 .track-img {
   width: 100%;
-  filter: brightness(0) invert(1);
+  max-width: 500px;
+  display: block;
+  margin: auto;
 }
 
 .data-box {
@@ -62,10 +62,8 @@ html, body {
   border: 2px solid #E10600;
 }
 
-.countdown {
-  margin-top: 30px;
-  font-size: 22px;
-  color: #E10600;
+.data-box p {
+  margin: 10px 0;
 }
 
 .section-title {
@@ -86,100 +84,35 @@ html, body {
 <div class="container">
 
   <div class="header">
-    <div class="gp-title" id="gpTitle"></div>
-    <div class="circuit-name" id="circuitName"></div>
+    <div class="gp-title">GRAN PREMIO DE AUSTRALIA</div>
+    <img class="flag" 
+         src="https://flagcdn.com/w320/au.png">
+    <div class="circuit-name">Albert Park Circuit</div>
   </div>
-
-  <div class="red-line"></div>
 
   <div class="content">
+    
     <div>
-      <img id="trackImg" class="track-img">
+      <img class="track-img" 
+           src="https://www.formula1.com/content/dam/fom-website/races/2023/Australia.png">
     </div>
 
-    <div class="data-box" id="circuitData"></div>
+    <div class="data-box">
+      <p><strong>Ubicación:</strong> Melbourne</p>
+      <p><strong>Longitud:</strong> 5.278 km</p>
+      <p><strong>Vueltas:</strong> 58</p>
+      <p><strong>Distancia total:</strong> 306.124 km</p>
+      <p><strong>Récord de vuelta:</strong> 1:19.813</p>
+
+      <div class="section-title">Últimos ganadores</div>
+      <p>2025 – Max Verstappen</p>
+      <p>2024 – Carlos Sainz</p>
+      <p>2023 – Lewis Hamilton</p>
+    </div>
+
   </div>
 
-  <div class="countdown" id="countdown"></div>
-
 </div>
-
-<script>
-
-// MINI CALENDARIO (puedes ampliar todo 2026)
-const races = [
-  {
-    name: "Gran Premio de Australia 🇦🇺",
-    circuit: "Albert Park Circuit",
-    location: "Melbourne",
-    date: "2026-03-08T02:00:00-06:00",
-    length: "5.278 km",
-    laps: 58,
-    distance: "306.124 km",
-    record: "1:19.813",
-    winners: ["2025 – Max Verstappen", "2024 – Carlos Sainz", "2023 – Lewis Hamilton"],
-    image: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Albert_Park_Circuit_2021.svg"
-  },
-  {
-    name: "Gran Premio de Japón 🇯🇵",
-    circuit: "Suzuka Circuit",
-    location: "Suzuka",
-    date: "2026-03-22T00:00:00-06:00",
-    length: "5.807 km",
-    laps: 53,
-    distance: "307.471 km",
-    record: "1:30.983",
-    winners: ["2025 – Max Verstappen", "2024 – Charles Leclerc", "2023 – Max Verstappen"],
-    image: "https://upload.wikimedia.org/wikipedia/commons/1/1e/Suzuka_circuit_map.svg"
-  }
-];
-
-function getNextRace() {
-  const now = new Date();
-  return races.find(race => new Date(race.date) > now);
-}
-
-const race = getNextRace();
-
-if (race) {
-  document.getElementById("gpTitle").textContent = race.name;
-  document.getElementById("circuitName").textContent = race.circuit;
-  document.getElementById("trackImg").src = race.image;
-
-  document.getElementById("circuitData").innerHTML = `
-    <p><strong>Ubicación:</strong> ${race.location}</p>
-    <p><strong>Longitud:</strong> ${race.length}</p>
-    <p><strong>Vueltas:</strong> ${race.laps}</p>
-    <p><strong>Distancia:</strong> ${race.distance}</p>
-    <p><strong>Récord:</strong> ${race.record}</p>
-    <div class="section-title">Últimos ganadores</div>
-    ${race.winners.map(w => `<p>${w}</p>`).join("")}
-  `;
-
-  const raceDate = new Date(race.date);
-
-  function updateCountdown() {
-    const now = new Date();
-    const diff = raceDate - now;
-
-    if (diff <= 0) {
-      document.getElementById("countdown").textContent = "🏁 ¡Race Time!";
-      return;
-    }
-
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((diff / 1000 / 60) % 60);
-
-    document.getElementById("countdown").textContent =
-      `Cuenta regresiva: ${days}d ${hours}h ${minutes}m`;
-  }
-
-  setInterval(updateCountdown, 1000);
-  updateCountdown();
-}
-
-</script>
 
 </body>
 </html>
